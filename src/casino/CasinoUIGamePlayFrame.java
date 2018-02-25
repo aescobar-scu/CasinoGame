@@ -68,7 +68,7 @@ public class CasinoUIGamePlayFrame extends JFrame {
 		mainPanel.add(Box.createRigidArea(new Dimension(0,10)));
 	
 		// create the sub-panels
-		JPanel betPanel = createBetPanel();
+		Box betPanel = createBetPanel(buttonHandler);
 		
 		// add the sub-panels
 		mainPanel.add(betPanel);
@@ -77,32 +77,102 @@ public class CasinoUIGamePlayFrame extends JFrame {
 		this.pack();
 	}
 	
-	private JPanel createBetPanel() {
-		JPanel betPanel = new JPanel();
+	private Box createBetPanel(ActionListener handler) {
+		int columnSize = 10;
+		
+		Box betPanel = new Box(BoxLayout.Y_AXIS);
 		
 		JLabel betLabel = new JLabel("Place Your Bet:");
 		betLabel.setFont(defaultFont);
 		betLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
-		String[] betNames = new String[] {"Reds", 
+		// The player placing the bet
+		// use public method String[] Casino.getPlayers();
+		String [] playerScreenNames = {"Tony",
+								 "Hinal",
+								 "Andrew",
+								 "Juan"};
+		
+		JComboBox<String> betPlayerSelect = new JComboBox<>(playerScreenNames);
+		betPlayerSelect.setFont(defaultFont);
+		betPlayerSelect.setAlignmentX(Component.CENTER_ALIGNMENT);
+		
+		// Amount of the bet in $$
+		JFormattedTextField betAmountField = new JFormattedTextField();
+		betAmountField.setColumns(10);
+		betAmountField.setFont(defaultFont);
+		betAmountField.setAlignmentX(Component.CENTER_ALIGNMENT);
+		
+		
+		// The type of Bet
+		String[] betTypeNames = new String[] {"Reds", 
 										  "Blacks",
 										  "Evens",
 										  "Odds",
 										  "Lows (1-18)",
 										  "Highs (19-36",
-										  "1 Number",
-										  "2 Number",
-										  "3 Number",
-										  "4 Number",
-										  "6 Number"};
+										  "Numerical Bet"};
 		
-		JComboBox<String> betSelect = new JComboBox<>(betNames);
-		betSelect.setFont(defaultFont);
-		betSelect.setAlignmentX(Component.CENTER_ALIGNMENT);
+		JComboBox<String> betTypeSelect = new JComboBox<>(betTypeNames);
+		betTypeSelect.setFont(defaultFont);
+		betTypeSelect.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
+		// The selected numbers for the bet (optional for some bets)
+		// from 0 to 36 only, and 1 to 6 numbers.
+		// TODO/tbd, maybe infer the numerical bet type from this field?
+		JFormattedTextField betNumberField = new JFormattedTextField();
+		betNumberField.setColumns(columnSize);
+		betNumberField.setFont(defaultFont);
+		betNumberField.setAlignmentX(Component.CENTER_ALIGNMENT);
+		
+		
+		JPanel betNamePanel = new JPanel(new GridLayout(2,1));
+		JLabel playerLabel = new JLabel("Screen Name");
+		playerLabel.setFont(defaultFont);
+		playerLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		betNamePanel.add(playerLabel);
+		betNamePanel.add(betPlayerSelect);
+		
+		JPanel betAmountPanel = new JPanel(new GridLayout(2,1));
+		JLabel betAmountLabel = new JLabel("Bet Amount $$");
+		betAmountLabel.setFont(defaultFont);
+		betAmountLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		betAmountPanel.add(betAmountLabel);
+		betAmountPanel.add(betAmountField);
+		
+		JPanel betSelectPanel = new JPanel(new GridLayout(2,1));
+		JLabel betTypeLabel = new JLabel("Type of Bet");
+		betTypeLabel.setFont(defaultFont);
+		betTypeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		betSelectPanel.add(betTypeLabel);
+		betSelectPanel.add(betTypeSelect);
+		
+		JPanel betNumbersPanel = new JPanel(new GridLayout(2,1));
+		JLabel betNumbersLabel = new JLabel("Numerical Bet, 0-36");
+		betNumbersLabel.setFont(defaultFont);
+		betNumbersLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		betNumbersPanel.add(betNumbersLabel);
+		betNumbersPanel.add(betNumberField);
+		
+		JPanel betEntryPanel = new JPanel();
+		betEntryPanel.add(betNamePanel);
+		betEntryPanel.add(betAmountPanel);
+		betEntryPanel.add(betSelectPanel);
+		betEntryPanel.add(betNumbersPanel);
+		
+		String buttonName = new String("PLACE BET");
+		JButton betButton = new JButton(buttonName);
+		betButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+		betButton.setFont(defaultFont);
+		betButton.setActionCommand(buttonName);
+		betButton.addActionListener(handler);
+				
 		betPanel.add(betLabel);
-		betPanel.add(betSelect);
-		
+		betPanel.add(Box.createRigidArea(new Dimension(0,10)));
+		betPanel.add(betEntryPanel);
+		betPanel.add(Box.createRigidArea(new Dimension(0,10)));
+		betPanel.add(betButton);
+		betPanel.add(Box.createRigidArea(new Dimension(0,200)));
 		
 		return betPanel;
 	}
@@ -114,7 +184,7 @@ public class CasinoUIGamePlayFrame extends JFrame {
 			String keyId = event.getActionCommand();
 			
 			switch (keyId) {
-				case "BET":
+				case "PLACE BET":
 					System.out.println("Info: game " + keyId);
 					break;
 				case "REMOVE":
