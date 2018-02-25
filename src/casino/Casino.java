@@ -34,6 +34,7 @@ public class Casino {
 		casinoMainFrame = new CasinoUIStartupFrame();
 		casinoPlayFrame = new CasinoUIGamePlayFrame();	
 		casinoMainFrame.setVisible(true);
+		casinoPlayFrame.setVisible(true); // for test only
 	}
 
 	public static void main(String[] args) {

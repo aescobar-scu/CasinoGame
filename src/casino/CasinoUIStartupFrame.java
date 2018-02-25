@@ -39,11 +39,7 @@ import javax.swing.*;
 
 
 
-public class CasinoUIStartupFrame extends JFrame {
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	
+public class CasinoUIStartupFrame extends JFrame {	
 	private Font defaultFont = new Font("Ariel", Font.PLAIN, 20);
 	private Font titleFont = new Font("Ariel", Font.BOLD, 30);
 	private Font headingFont = new Font("Ariel", Font.BOLD, 25);
@@ -58,40 +54,52 @@ public class CasinoUIStartupFrame extends JFrame {
 		//this.setSize(900, 800);
 		
 		// main start panel layout
-		JPanel startPanel = new JPanel();
+		Box startPanel = new Box(BoxLayout.Y_AXIS);
 		
-		//BoxLayout startPanelLayout = new BoxLayout(startPanel, BoxLayout.Y_AXIS);
-		GridLayout startPanelLayout = new GridLayout(0,1);
-		startPanel.setLayout(startPanelLayout);
+		// ButtonHandler for PLAY, ADD, REMOVE buttons
+		ButtonHandler buttonHandler = new ButtonHandler();
 		
 		// welcome label at the top
 		JLabel welcomeLabel = new JLabel("Welcome to the COEN 275 Casino!");
 		welcomeLabel.setFont(titleFont);
 		welcomeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		startPanel.add(Box.createRigidArea(new Dimension(0,10)));
 		startPanel.add(welcomeLabel);
+		startPanel.add(Box.createRigidArea(new Dimension(0,10)));
 		
 		// create and add the sub-panels
 		JPanel gameSelectPanel = createGameSelectPanel();
-		JPanel addNewPlayerPanel = createNewPlayerPanel();
-		JPanel currentPlayersPanel = createCurrentPlayersPanel(); 
+		JPanel addNewPlayerPanel = createNewPlayerPanel(buttonHandler);
+		Box currentPlayersPanel = createCurrentPlayersPanel(buttonHandler); 
+		
+		// create the PLAY button
+		String buttonName = new String("PLAY");
+		JButton playButton = new JButton(buttonName);
+		playButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+		playButton.setFont(defaultFont);
+		playButton.setActionCommand(buttonName);
+		playButton.addActionListener(buttonHandler);
 		
 		startPanel.add(gameSelectPanel);
+		startPanel.add(Box.createRigidArea(new Dimension(0,10)));
+		startPanel.add(playButton);
+		startPanel.add(Box.createRigidArea(new Dimension(0,100)));
 		startPanel.add(addNewPlayerPanel);
+		startPanel.add(Box.createRigidArea(new Dimension(0,100)));
 		startPanel.add(currentPlayersPanel);
-		
+		startPanel.add(Box.createRigidArea(new Dimension(0,100)));
+				
 		// add the main start panel to the frame
 		this.add(startPanel);
 		this.pack();
 	}
 	
-	private JPanel createNewPlayerPanel() {
+	private JPanel createNewPlayerPanel(ActionListener handler) {
 		
 		int columnSize = 20;
 
 		JPanel newPlayerPanel = new JPanel();
 		BoxLayout newPlayerPanelLayout = new BoxLayout(newPlayerPanel, BoxLayout.Y_AXIS);
-		//GridLayout newPlayerPanelLayout = new GridLayout(0,1);
-		//BorderLayout newPlayerPanelLayout = new BorderLayout();
 		newPlayerPanel.setLayout(newPlayerPanelLayout);
 
 		// create all the labels and add to a new label panel
@@ -107,9 +115,9 @@ public class CasinoUIStartupFrame extends JFrame {
 		screenNameLabel.setFont(defaultFont);
 		screenNameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
-		JLabel accountLabel = new JLabel("Starting Account Balance in $$");
-		screenNameLabel.setFont(defaultFont);
-		screenNameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		JLabel accountLabel = new JLabel("Starting Account Balance in $");
+		accountLabel.setFont(defaultFont);
+		accountLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
 		// labels 
 		JPanel labelPanel = new JPanel(new GridLayout(0,1));
@@ -145,22 +153,27 @@ public class CasinoUIStartupFrame extends JFrame {
 		tablePanel.add(fieldPanel);
 		
 		// Add Player Button
-		JButton addPlayerButton = new JButton("ADD");
+		String buttonName = new String("ADD");
+		JButton addPlayerButton = new JButton(buttonName);
 		addPlayerButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		addPlayerButton.setFont(defaultFont);
+		addPlayerButton.setActionCommand(buttonName);
+		addPlayerButton.addActionListener(handler);
 		
 		newPlayerPanel.add(headingLabel);
 		newPlayerPanel.add(tablePanel);
+		
 		newPlayerPanel.add(addPlayerButton);
+		newPlayerPanel.add(Box.createRigidArea(new Dimension(0,10)));
 		
 		return newPlayerPanel;
 	}
 		
 
-	private JPanel createCurrentPlayersPanel() {
-		JPanel currentPlayersPanel = new JPanel();
-		BoxLayout currentPlayersPanelLayout = new BoxLayout(currentPlayersPanel, BoxLayout.Y_AXIS);
-		currentPlayersPanel.setLayout(currentPlayersPanelLayout);
+	private Box createCurrentPlayersPanel(ActionListener handler) {
+		Box currentPlayersPanel = new Box(BoxLayout.Y_AXIS);
+		//BoxLayout currentPlayersPanelLayout = new BoxLayout(currentPlayersPanel, BoxLayout.Y_AXIS);
+		//currentPlayersPanel.setLayout(currentPlayersPanelLayout);
 			
 		JLabel headingLabel = new JLabel("CURRENT PLAYERS");
 		headingLabel.setFont(headingFont);
@@ -182,12 +195,17 @@ public class CasinoUIStartupFrame extends JFrame {
 		currentPlayerListModel.addElement("Juan Wang, aka Juan, $40000.00");
 		
 		// Remove Player Button
-		JButton removePlayerButton = new JButton("REMOVE");
+		String buttonName = new String("REMOVE");
+		JButton removePlayerButton = new JButton(buttonName);
 		removePlayerButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		removePlayerButton.setFont(defaultFont);
+		removePlayerButton.setActionCommand(buttonName);
+		removePlayerButton.addActionListener(handler);
 		
 		currentPlayersPanel.add(headingLabel);
+		currentPlayersPanel.add(Box.createRigidArea(new Dimension(0,10)));
 		currentPlayersPanel.add(currentPlayersList);
+		currentPlayersPanel.add(Box.createRigidArea(new Dimension(0,10)));
 		currentPlayersPanel.add(removePlayerButton);
 		
 		return currentPlayersPanel;
@@ -211,5 +229,26 @@ public class CasinoUIStartupFrame extends JFrame {
 		
 		return gameSelectPanel;
 	}
+	
 	// Button Listener
+	private class ButtonHandler implements ActionListener {
+		
+		@Override
+		public void actionPerformed(ActionEvent event) {
+			String keyId = event.getActionCommand();
+			System.out.println("Info: startup key: " + keyId);
+			
+			switch (keyId) {
+				case "PLAY":
+					System.out.println("Info: PLAY: ");
+					break;
+				case "REMOVE":
+					System.out.println("Info: REMOVE");
+					break;
+				case "ADD":
+					System.out.println("Info: ADD");
+					break;
+			}
+		}
+	}
 }
