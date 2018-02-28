@@ -43,9 +43,8 @@ import javax.swing.*;
 public class CasinoUIGamePlayFrame extends JFrame {
 	private Font defaultFont = new Font("Ariel", Font.PLAIN, 20);
 	private Font titleFont = new Font("Ariel", Font.BOLD, 30);
-	private Font headingFont = new Font("Ariel", Font.BOLD, 25);
-	
-	private DefaultListModel<String> currentPlayerListModel = new DefaultListModel<String>();
+	private Font headingFont = new Font("Ariel", Font.BOLD, 25);	
+	private DefaultListModel<String> currentBetsListModel = new DefaultListModel<String>();
 	
 	private int hGap = 10;
 	private int vGap = 10;
@@ -69,9 +68,25 @@ public class CasinoUIGamePlayFrame extends JFrame {
 	
 		// create the sub-panels
 		Box betPanel = createBetPanel(buttonHandler);
+		Box currentBetsPanel = createCurrentBetsPanel(buttonHandler);
+		Box playerResultsPanel = createPlayerResultsPanel(buttonHandler);
+		Box playGamePanel = createPlayGamePanel(buttonHandler);
+		
+		// create the exit button
+		String buttonName = new String("EXIT");
+		JButton exitButton = new JButton(buttonName);
+		exitButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+		exitButton.setFont(defaultFont);
+		exitButton.setActionCommand(buttonName);
+		exitButton.addActionListener(buttonHandler);
 		
 		// add the sub-panels
 		mainPanel.add(betPanel);
+		mainPanel.add(playGamePanel);
+		mainPanel.add(currentBetsPanel);
+		mainPanel.add(playerResultsPanel);
+		mainPanel.add(exitButton);
+		mainPanel.add(Box.createRigidArea(new Dimension(0,10)));
 		
 		this.add(mainPanel);
 		this.pack();
@@ -172,9 +187,160 @@ public class CasinoUIGamePlayFrame extends JFrame {
 		betPanel.add(betEntryPanel);
 		betPanel.add(Box.createRigidArea(new Dimension(0,10)));
 		betPanel.add(betButton);
-		betPanel.add(Box.createRigidArea(new Dimension(0,200)));
+		betPanel.add(Box.createRigidArea(new Dimension(0,100)));
 		
 		return betPanel;
+	}
+	
+	private Box createCurrentBetsPanel(ActionListener handler) {
+		Box currentBetsPanel = new Box(BoxLayout.Y_AXIS);
+			
+		JLabel headingLabel = new JLabel("CURRENT BETS");
+		headingLabel.setFont(headingFont);
+		headingLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		
+		// JList of current players, with single selection and delete button
+		JList<String> currentBetsList = new JList<>(currentBetsListModel);
+		currentBetsList.setAlignmentX(Component.CENTER_ALIGNMENT);
+		currentBetsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		currentBetsList.setLayoutOrientation(JList.VERTICAL);
+		currentBetsList.setFont(defaultFont);
+		currentBetsList.setSelectedIndex(0);
+	
+		// initialize the list for testing only ...
+		currentBetsListModel.addElement("Tony		$10.00	11");
+		currentBetsListModel.addElement("Tony		$100.00	Reds");
+		currentBetsListModel.addElement("Hinal	$10.00	3,12,32,36");
+		currentBetsListModel.addElement("Andrew	$50.00	Evens");
+		currentBetsListModel.addElement("Juan		$1.00	12");
+		currentBetsListModel.addElement("Juan		$100.00	High");
+		
+		// Remove Player Button
+		String buttonName = new String("REMOVE");
+		JButton removeBetButton = new JButton(buttonName);
+		removeBetButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+		removeBetButton.setFont(defaultFont);
+		removeBetButton.setActionCommand(buttonName);
+		removeBetButton.addActionListener(handler);
+		
+		//currentBetsPanel.add(Box.createRigidArea(new Dimension(0,100)));
+		currentBetsPanel.add(headingLabel);
+		currentBetsPanel.add(Box.createRigidArea(new Dimension(0,10)));
+		currentBetsPanel.add(currentBetsList);
+		currentBetsPanel.add(Box.createRigidArea(new Dimension(0,10)));
+		currentBetsPanel.add(removeBetButton);
+		
+		return currentBetsPanel;
+	}
+	
+	private Box createPlayerResultsPanel(ActionListener handler) {
+		
+		int columnSize = 20;
+
+		Box playerPanel = new Box(BoxLayout.Y_AXIS);
+		// create all the labels and add to a new label panel
+		JLabel headingLabel = new JLabel("PLAYER RESULTS");
+		headingLabel.setFont(headingFont);
+		headingLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		
+		// the table labels 
+		JLabel screenNameLabel = new JLabel("Screen Name");
+		screenNameLabel.setFont(defaultFont);
+		screenNameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		
+		JLabel winLossLabel = new JLabel("Last Win/Loss");
+		winLossLabel.setFont(defaultFont);
+		winLossLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		
+		JLabel accountBalanceLabel = new JLabel("Account Balance");
+		accountBalanceLabel.setFont(defaultFont);
+		accountBalanceLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		
+		// add table labels to the playerDataPanel in 1 row
+		JPanel playerDataPanel = new JPanel(new GridLayout(0,3));
+		playerDataPanel.add(screenNameLabel);
+		playerDataPanel.add(winLossLabel);
+		playerDataPanel.add(accountBalanceLabel);
+		
+		// Now add the player data to the panel 1 row at a time
+		// 	Create using a for loop and current players list at initialization
+		// 	TBD - how will I name and reference each users account and winLoss?
+		// screen name
+		
+		JFormattedTextField screenNameField = new JFormattedTextField();
+		screenNameField.setColumns(columnSize);
+		screenNameField.setFont(defaultFont);
+		screenNameField.setAlignmentX(Component.CENTER_ALIGNMENT);
+		// win/loss amount
+		JFormattedTextField winLossField = new JFormattedTextField();
+		winLossField.setColumns(columnSize);
+		winLossField.setFont(defaultFont);
+		winLossField.setAlignmentX(Component.CENTER_ALIGNMENT);
+		
+		JFormattedTextField accountBalanceField = new JFormattedTextField();
+		accountBalanceField.setColumns(columnSize);
+		accountBalanceField.setFont(defaultFont);
+		accountBalanceField.setAlignmentX(Component.CENTER_ALIGNMENT);
+			
+		// add each row to the playerDatapanel
+		playerDataPanel.add(screenNameField);
+		playerDataPanel.add(winLossField);
+		playerDataPanel.add(accountBalanceField);
+
+		// Grid layouts always need to be encapsulated into a panel to 
+		// prevent stretching
+		JPanel combinedDataPanel = new JPanel();
+		combinedDataPanel.add(playerDataPanel);
+		
+		playerPanel.add(Box.createRigidArea(new Dimension(0,100)));
+		playerPanel.add(headingLabel);
+		playerPanel.add(Box.createRigidArea(new Dimension(0,10)));
+		playerPanel.add(combinedDataPanel);
+		playerPanel.add(Box.createRigidArea(new Dimension(0,10)));
+		
+		return playerPanel;
+	}
+
+	private Box createPlayGamePanel(ActionListener handler) {
+		int columnSize = 10;
+		
+		Box playGamePanel = new Box(BoxLayout.Y_AXIS);
+		
+		// spin button
+		String buttonName = new String("SPIN");
+		JButton spinButton = new JButton(buttonName);
+		spinButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+		spinButton.setFont(defaultFont);
+		spinButton.setActionCommand(buttonName);
+		spinButton.addActionListener(handler);
+		
+		JPanel buttonPanel = new JPanel();
+		buttonPanel.add(spinButton);
+		
+		// result label
+		JLabel headingLabel = new JLabel("PLAY ROULETTE");
+		headingLabel.setFont(headingFont);
+		headingLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		
+		// result label
+		JLabel resultLabel = new JLabel("Spin Result");
+		resultLabel.setFont(defaultFont);
+		resultLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		
+		JFormattedTextField spinResultField = new JFormattedTextField();
+		spinResultField.setColumns(columnSize);
+		spinResultField.setFont(defaultFont);
+		spinResultField.setAlignmentX(Component.CENTER_ALIGNMENT);
+		
+		JPanel resultPanel = new JPanel();
+		resultPanel.add(spinResultField);
+		
+		playGamePanel.add(headingLabel);
+		playGamePanel.add(resultLabel);
+		playGamePanel.add(resultPanel);
+		playGamePanel.add(buttonPanel);
+		
+		return playGamePanel;
 	}
 	
 	private class ButtonHandler implements ActionListener {
@@ -193,12 +359,12 @@ public class CasinoUIGamePlayFrame extends JFrame {
 				case "SPIN":
 					System.out.println("Info: game " + keyId);
 					break;
-				case "QUIT":
+				case "EXIT":
 					System.out.println("Info: game " + keyId);
+					Casino.selectGameFrame(false);
 					break;		
 					
 			}
 		}
 	}
-
 }
