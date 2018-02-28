@@ -241,6 +241,7 @@ public class CasinoUIStartupFrame extends JFrame {
 			switch (keyId) {
 				case "PLAY":
 					System.out.println("Info: PLAY: ");
+					Casino.selectGameFrame(true);
 					break;
 				case "REMOVE":
 					System.out.println("Info: REMOVE");

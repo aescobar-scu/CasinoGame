@@ -18,8 +18,8 @@ public class Casino {
 	 * @param args
 	 */
 	// casino game ui screens
-	CasinoUIStartupFrame casinoMainFrame;
-	CasinoUIGamePlayFrame casinoPlayFrame;
+	static CasinoUIStartupFrame casinoMainFrame;
+	static CasinoUIGamePlayFrame casinoPlayFrame;
 	
 	// For the player and wager lists, we use the player selected nickname
 	// as the unique player id. This nickname/id acts as the reference point 
@@ -34,15 +34,14 @@ public class Casino {
 		casinoMainFrame = new CasinoUIStartupFrame();
 		casinoPlayFrame = new CasinoUIGamePlayFrame();	
 		casinoMainFrame.setVisible(true);
-		casinoPlayFrame.setVisible(true); // for test only
 	}
 
 	public static void main(String[] args) {
 		
 		Casino casinoPlay = new Casino();	
-		casinoPlay.casinoMainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		casinoMainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		// this is necessary to prevent closing the screen from exiting the game
-		casinoPlay.casinoPlayFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		casinoPlayFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
 	}
 	
@@ -67,6 +66,17 @@ public class Casino {
 	// and also CLEAR the existing wagerList!
 	public void payWagers() {
 		
+	}
+	
+	public static void selectGameFrame(boolean select) {
+		if (select) {
+			casinoMainFrame.setVisible(false);
+			casinoPlayFrame.setVisible(true);
+		}
+		else {
+			casinoMainFrame.setVisible(true);
+			casinoPlayFrame.setVisible(false);
+		}
 	}
 
 }

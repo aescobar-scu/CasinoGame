@@ -72,11 +72,21 @@ public class CasinoUIGamePlayFrame extends JFrame {
 		Box playerResultsPanel = createPlayerResultsPanel(buttonHandler);
 		Box playGamePanel = createPlayGamePanel(buttonHandler);
 		
+		// create the exit button
+		String buttonName = new String("EXIT");
+		JButton exitButton = new JButton(buttonName);
+		exitButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+		exitButton.setFont(defaultFont);
+		exitButton.setActionCommand(buttonName);
+		exitButton.addActionListener(buttonHandler);
+		
 		// add the sub-panels
 		mainPanel.add(betPanel);
 		mainPanel.add(playGamePanel);
 		mainPanel.add(currentBetsPanel);
 		mainPanel.add(playerResultsPanel);
+		mainPanel.add(exitButton);
+		mainPanel.add(Box.createRigidArea(new Dimension(0,10)));
 		
 		this.add(mainPanel);
 		this.pack();
@@ -349,8 +359,9 @@ public class CasinoUIGamePlayFrame extends JFrame {
 				case "SPIN":
 					System.out.println("Info: game " + keyId);
 					break;
-				case "QUIT":
+				case "EXIT":
 					System.out.println("Info: game " + keyId);
+					Casino.selectGameFrame(false);
 					break;		
 					
 			}
