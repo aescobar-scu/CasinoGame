@@ -6,12 +6,11 @@ import java.util.Map;
 
 public class Wager {
 
-    private int ownerId;
+    private String ownerId;
     private String wagerType;
     private int payoutOdds;
-    private ArrayList<Integer> wager;
+    private int wagerContent;
     private double wagerAmount;
-    private double winLoseAmount;
     private static final Map<String, Integer> wagerTypePayoutMap =new HashMap<String, Integer>(){
         {
             put("Straight", 35);
@@ -31,13 +30,12 @@ public class Wager {
     };
 
     // constructors
-    public Wager(int id, String type, double amount, ArrayList<Integer> wager) {
+    public Wager(String id, String type, double amount, int content) {
         ownerId = id;
         wagerType = type;
         payoutOdds = wagerTypePayoutMap.get(wagerType);
         wagerAmount = amount;
-        this.wager = new ArrayList<Integer>(wager);;
-        winLoseAmount = 0.00;
+        wagerContent = content;
     }
 
     public Wager(int id) {
@@ -45,7 +43,7 @@ public class Wager {
     }
 
     // getters
-    public int getWagerId() {
+    public String getWagerId() {
         return ownerId;
     }
 
@@ -57,43 +55,26 @@ public class Wager {
         return payoutOdds;
     }
 
-    public ArrayList<Integer> getWager() {
-        return wager;
+    public int getWagerContent() {
+        return wagerContent;
     }
 
     public double getWagerAmount() {
         return wagerAmount;
     }
-
-    public double getWinLoseAmount(boolean win) {
-        if (win) {
-            winLoseAmount = wagerAmount * payoutOdds;
-        } else {
-            winLoseAmount -= wagerAmount;
-        }
-        return winLoseAmount;
-    }
-
+    
         // setters
     public void setWagerType(String type) {
         wagerType =type;
         payoutOdds = wagerTypePayoutMap.get(wagerType);
     }
 
-    public void setWager(ArrayList<Integer> wager) {
-        wager = wager;
+    public void setWagerContent(int content) {
+        wagerContent = content;
     }
 
     public void setWagerAmount(double amount) {
         wagerAmount = amount;
-    }
-
-
-    public static void main(String[] args){
-        ArrayList<Integer> wager = new ArrayList<>(3);
-        Wager myWager = new Wager(123, "Straight", 50.1, wager);
-        double winOrLose = myWager.getWinLoseAmount(true);
-        System.out.println(winOrLose);
     }
 
 }
