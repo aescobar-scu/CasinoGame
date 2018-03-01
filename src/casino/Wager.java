@@ -9,7 +9,7 @@ public class Wager {
     private String ownerId;
     private String wagerType;
     private int payoutOdds;
-    private int wagerContent;
+    private List<Integer> wagerContent = new ArrayList<Integer>();
     private double wagerAmount;
     private static final Map<String, Integer> wagerTypePayoutMap =new HashMap<String, Integer>(){
         {
@@ -20,8 +20,8 @@ public class Wager {
             put("Six Line", 5);
             put("Columns", 2);
             put("Dozens", 2);
-            put("Red", 1);
-            put("Black", 1);
+            put("Reds", 1);
+            put("Blacks", 1);
             put("Highs", 1);
             put("Lows", 1);
             put("Odds", 1);
@@ -30,15 +30,24 @@ public class Wager {
     };
 
     // constructors
-    public Wager(String id, String type, double amount, int content) {
+    // integer content are list of legal ints for the wager type
+    public Wager(String id, String type, double amount, List<Integer> content) {
         ownerId = id;
         wagerType = type;
         payoutOdds = wagerTypePayoutMap.get(wagerType);
         wagerAmount = amount;
         wagerContent = content;
     }
+    // some wagers like red/black do not have integer content
+    public Wager(String id, String type, double amount) {
+        ownerId = id;
+        wagerType = type;
+        payoutOdds = wagerTypePayoutMap.get(wagerType);
+        wagerAmount = amount;
+        wagerContent = null;
+    }
 
-    public Wager(int id) {
+    public Wager(String id) {
         ownerId = id;
     }
 
@@ -55,21 +64,21 @@ public class Wager {
         return payoutOdds;
     }
 
-    public int getWagerContent() {
+    public List<Integer> getWagerContent() {
         return wagerContent;
     }
 
     public double getWagerAmount() {
         return wagerAmount;
     }
-    
+
         // setters
     public void setWagerType(String type) {
         wagerType =type;
         payoutOdds = wagerTypePayoutMap.get(wagerType);
     }
 
-    public void setWagerContent(int content) {
+    public void setWagerContent(List<Integer> content) {
         wagerContent = content;
     }
 

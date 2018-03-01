@@ -49,9 +49,13 @@ public class CasinoUIStartupFrame extends JFrame {
 	private int hGap = 10;
 	private int vGap = 10;
 	
-	CasinoUIStartupFrame() {
-		super("WELCOME TO THE COEN 275 CASINO!");
-		//this.setSize(900, 800);
+	private Casino casino;
+	
+	JComboBox<String> selectGame;
+	
+	CasinoUIStartupFrame(Casino casino) {
+		super("WELCOME TO THE COEN 275 CASINO!");	
+		this.casino = casino;
 		
 		// main start panel layout
 		Box startPanel = new Box(BoxLayout.Y_AXIS);
@@ -219,7 +223,7 @@ public class CasinoUIStartupFrame extends JFrame {
 		gameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
 		String[] gameNames = new String[] {"Roulette", "Coming Soon!"};
-		JComboBox<String> selectGame = new JComboBox<>(gameNames);
+		selectGame = new JComboBox<>(gameNames);
 		selectGame.setFont(defaultFont);
 		selectGame.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
@@ -241,7 +245,9 @@ public class CasinoUIStartupFrame extends JFrame {
 			switch (keyId) {
 				case "PLAY":
 					System.out.println("Info: PLAY: ");
-					Casino.selectGameFrame(true);
+					String gameName = selectGame.getItemAt(selectGame.getSelectedIndex());
+					casino.createGame(gameName);
+					casino.selectGameFrame(true);
 					break;
 				case "REMOVE":
 					System.out.println("Info: REMOVE");
