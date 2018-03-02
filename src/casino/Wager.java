@@ -1,7 +1,5 @@
-
+package casino;
 import java.util.*;
-import java.util.HashMap;
-import java.util.Map;
 
 
 public class Wager {
@@ -51,6 +49,7 @@ public class Wager {
 
 
     // getters
+    // this is the screenName
     public String getPlayerName() {
         return playerName;
     }

@@ -75,10 +75,10 @@ public class Casino {
 		// if the wager is not found then we should fail
 
 		for ( Wager currentWager : wagerList) {
-			if (currentWager.getWagerId() 		== screenName &&
+			if (currentWager.getPlayerName() 		== screenName &&
 				currentWager.getWagerAmount() 	== wagerAmount &&
 				currentWager.getWagerType() 	== wagerType &&
-				currentWager.getWagerContent().equals(wagerContent)
+				currentWager.getBetNumber().equals(wagerContent)
 				)
 
 				wagerList.remove(currentWager);
@@ -90,7 +90,7 @@ public class Casino {
 	public void payWagers() {
 		for (Wager wager : wagerList) {
 			// get screenName and payout result from the wager
-			String playerName = wager.getWagerId();
+			String playerName = wager.getPlayerName();
 			double payout = game.calculatePayout(wager);
 			
 			// update the player account
