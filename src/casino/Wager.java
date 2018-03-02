@@ -88,7 +88,7 @@ public class Wager {
 //        System.out.println(myWager.getWagerAmount());
 //        System.out.println(myWager.getPayoutOdds());
 //        System.out.println(myWager.getWagerContent());
-    }
+//    }
 }
 
 
