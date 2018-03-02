@@ -1,4 +1,3 @@
-package casino;
 
 import java.util.*;
 import java.util.HashMap;
@@ -7,10 +6,10 @@ import java.util.Map;
 
 public class Wager {
 
-    private String ownerId;
+    private String playerName;
     private String wagerType;
     private int payoutOdds;
-    private List<Integer> wagerContent;
+    private List<Integer> betNumber;
     private double wagerAmount;
     private static final Map<String, Integer> wagerTypePayoutMap =new HashMap<String, Integer>(){
         {
@@ -31,28 +30,29 @@ public class Wager {
     };
 
     // constructors
-    public Wager(String id, String type, double amount, List<Integer> content) {
-        ownerId = id;
-        wagerType = type;
-        payoutOdds = wagerTypePayoutMap.get(wagerType);
-        wagerAmount = amount;
-        wagerContent = content;
+    public Wager(String playerName, String wagerType, double wagerAmount, List<Integer> betNumber) {
+        this.playerName = playerName;
+        this.wagerType = wagerType;
+        payoutOdds = wagerTypePayoutMap.get(this.wagerType);
+        this.wagerAmount = wagerAmount;
+        this.betNumber = betNumber;
     }
 
-    public Wager(String id, String type, double amount) {
-        ownerId = id;
-        wagerType = type;
-        payoutOdds = wagerTypePayoutMap.get(wagerType);
-        wagerAmount = amount;
+    public Wager(String playerName, String wagerType, double wagerAmount) {
+        this.playerName = playerName;
+        this.wagerType = wagerType;
+        payoutOdds = wagerTypePayoutMap.get(this.wagerType);
+        this.wagerAmount = wagerAmount;
     }
-    
-    public Wager(String id) {
-        ownerId = id;
+
+    public Wager(String playerName) {
+        this.playerName = playerName;
     }
+
 
     // getters
-    public String getWagerId() {
-        return ownerId;
+    public String getPlayerName() {
+        return playerName;
     }
 
     public String getWagerType() {
@@ -63,8 +63,8 @@ public class Wager {
         return payoutOdds;
     }
 
-    public List<Integer> getWagerContent() {
-        return wagerContent;
+    public List<Integer> getBetNumber() {
+        return betNumber;
     }
 
     public double getWagerAmount() {
@@ -72,30 +72,44 @@ public class Wager {
     }
 
     // setters
-    public void setWagerType(String type) {
-        wagerType =type;
-        payoutOdds = wagerTypePayoutMap.get(wagerType);
+    public void setWagerType(String wagerType) {
+        this.wagerType = wagerType;
+        payoutOdds = wagerTypePayoutMap.get(this.wagerType);
     }
 
-    public void setWagerContent(List<Integer> content) {
-        wagerContent = content;
+    public void setBetNumber(List<Integer> betNumber) {
+        this.betNumber = betNumber;
     }
 
-    public void setWagerAmount(double amount) {
-        wagerAmount = amount;
+    public void setWagerAmount(double wagerAmount) {
+        this.wagerAmount = wagerAmount;
     }
 
 
-//    // this is for compiling test
-//    public static void main(String[] args){
-//        int content = 4;
-//        Wager myWager = new Wager("stone", "Straight", 50.1, content);
-//        System.out.println(myWager.getWagerId());
+    // this is for compiling test
+    public static void main(String[] args){
+        List<Integer> content = new ArrayList<>();
+        content.add(3);
+        content.add(4);
+
+//        Wager myWager = new Wager("stone", "Split", 50.1, content);
+//        System.out.println(myWager.getPlayerName());
 //        System.out.println(myWager.getWagerType());
 //        System.out.println(myWager.getWagerAmount());
 //        System.out.println(myWager.getPayoutOdds());
-//        System.out.println(myWager.getWagerContent());
-//    }
+//        System.out.println(myWager.getBetNumber());
+
+
+        Wager wager2 = new Wager("stone");
+//        wager2.setWagerType("split");
+        wager2.setWagerAmount(69.99);
+        wager2.setBetNumber(content);
+        System.out.println(wager2.getPlayerName());
+        System.out.println(wager2.getWagerType());
+        System.out.println(wager2.getWagerAmount());
+        System.out.println(wager2.getPayoutOdds());
+        System.out.println(wager2.getBetNumber());
+    }
 }
 
 
