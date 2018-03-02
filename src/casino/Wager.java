@@ -10,7 +10,7 @@ public class Wager {
     private String ownerId;
     private String wagerType;
     private int payoutOdds;
-    private int wagerContent;
+    private List<Integer> wagerContent;
     private double wagerAmount;
     private static final Map<String, Integer> wagerTypePayoutMap =new HashMap<String, Integer>(){
         {
@@ -31,7 +31,7 @@ public class Wager {
     };
 
     // constructors
-    public Wager(String id, String type, double amount, int content) {
+    public Wager(String id, String type, double amount, List<Integer> content) {
         ownerId = id;
         wagerType = type;
         payoutOdds = wagerTypePayoutMap.get(wagerType);
@@ -39,6 +39,13 @@ public class Wager {
         wagerContent = content;
     }
 
+    public Wager(String id, String type, double amount) {
+        ownerId = id;
+        wagerType = type;
+        payoutOdds = wagerTypePayoutMap.get(wagerType);
+        wagerAmount = amount;
+    }
+    
     public Wager(String id) {
         ownerId = id;
     }
@@ -56,7 +63,7 @@ public class Wager {
         return payoutOdds;
     }
 
-    public int getWagerContent() {
+    public List<Integer> getWagerContent() {
         return wagerContent;
     }
 
@@ -70,7 +77,7 @@ public class Wager {
         payoutOdds = wagerTypePayoutMap.get(wagerType);
     }
 
-    public void setWagerContent(int content) {
+    public void setWagerContent(List<Integer> content) {
         wagerContent = content;
     }
 
