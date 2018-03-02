@@ -21,11 +21,11 @@ public class Casino {
 	// casino game ui screens
 	//static CasinoUIStartupFrame casinoMainFrame;
 	//static CasinoUIGamePlayFrame casinoPlayFrame;
-	private Map<String, Player> playerList;
-	private List<Wager> wagerList;
+	private static Map<String, Player> playerList;
+	private static List<Wager> wagerList;
 	private String gameName;
 
-	//private Casino casino;
+	// game is not initialized until the PLAY button is pressed in the UI
 	private Game game;
 
     // the UI frames
@@ -40,16 +40,20 @@ public class Casino {
 
 	public static void main(String[] args) {
 		Casino casino = new Casino();
+		playerList = new HashMap<String, Player>();
+		wagerList = new ArrayList<Wager>();
 		
 	}
 
-	public void addPlayer(String name, String screenName, int account) {
-		Player newPlayer = new Player(name, screenName, account);
+	public void addPlayer(String name, String screenName, double accountValue) {
+		Player newPlayer = new Player(name, screenName, accountValue);
 		playerList.put(screenName, newPlayer);
+		System.out.println("addPlayer: " + name + " to playerList, now " + playerList.size() + " players");
 	}
 
 	public void deletePlayer(String screenName) {
 		playerList.remove(screenName);
+		System.out.println("deletePlayer: " + screenName + " from playerList, now " + playerList.size() + " players");
 	}
 
 	// Add a new wager. If playerId exists, the wager is overwritten
@@ -83,9 +87,17 @@ public class Casino {
 	}
 
 	// This method will pay based on last game result,
-	// and also CLEAR the existing wagerList!
 	public void payWagers() {
-
+		for (Wager wager : wagerList) {
+			// get screenName and payout result from the wager
+			String playerName = wager.getWagerId();
+			double payout = game.calculatePayout(wager);
+			
+			// update the player account
+			Player p = playerList.get(playerName);
+			p.setAccount(p.getAccount() + payout); 
+			playerList.put(playerName, p);
+		}
 	}
 
 	public boolean createGame(String gameName) {

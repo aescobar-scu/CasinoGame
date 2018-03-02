@@ -43,15 +43,21 @@ public class CasinoUIStartupFrame extends JFrame {
 	private Font defaultFont = new Font("Ariel", Font.PLAIN, 20);
 	private Font titleFont = new Font("Ariel", Font.BOLD, 30);
 	private Font headingFont = new Font("Ariel", Font.BOLD, 25);
-	
-	private DefaultListModel<String> currentPlayerListModel = new DefaultListModel<String>();
-	
+		
 	private int hGap = 10;
 	private int vGap = 10;
 	
 	private Casino casino;
 	
-	JComboBox<String> selectGame;
+	/** UI text fields used in the game operation **/
+	private JComboBox<String> selectGame;
+	private JList<String> currentPlayersList;
+	private DefaultListModel<String> currentPlayerListModel = new DefaultListModel<String>();
+
+	// new player text fields
+	private JFormattedTextField nameField;
+	private JFormattedTextField screenNameField;
+	private JFormattedTextField accountField;
 	
 	CasinoUIStartupFrame(Casino casino) {
 		super("WELCOME TO THE COEN 275 CASINO!");	
@@ -130,17 +136,17 @@ public class CasinoUIStartupFrame extends JFrame {
 		labelPanel.add(accountLabel);
 		
 		// TODO: these text fields should be formatted
-		JFormattedTextField nameField = new JFormattedTextField();
+		nameField = new JFormattedTextField();
 		nameField.setColumns(columnSize);
 		nameField.setFont(defaultFont);
 		nameField.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
-		JFormattedTextField screenNameField = new JFormattedTextField();
+		screenNameField = new JFormattedTextField();
 		screenNameField.setColumns(columnSize);
 		screenNameField.setFont(defaultFont);
 		nameField.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
-		JFormattedTextField accountField = new JFormattedTextField();
+		accountField = new JFormattedTextField();
 		accountField.setColumns(columnSize);
 		accountField.setFont(defaultFont);
 		nameField.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -184,7 +190,7 @@ public class CasinoUIStartupFrame extends JFrame {
 		headingLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
 		// JList of current players, with single selection and delete button
-		JList<String> currentPlayersList = new JList<>(currentPlayerListModel);
+		currentPlayersList = new JList<>(currentPlayerListModel);
 		currentPlayersList.setAlignmentX(Component.CENTER_ALIGNMENT);
 		currentPlayersList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		currentPlayersList.setLayoutOrientation(JList.VERTICAL);
@@ -193,10 +199,10 @@ public class CasinoUIStartupFrame extends JFrame {
 	
 		// initialize the list for testing only ...
 		// tbd how we want to format and label the list
-		currentPlayerListModel.addElement("Anthony Escobar, aka Tony, $10000.00");
-		currentPlayerListModel.addElement("Hinal Pinchal, aka Hinal, $20000.00");
-		currentPlayerListModel.addElement("Andrew Chen, aka Andrew, $30000.00");
-		currentPlayerListModel.addElement("Juan Wang, aka Juan, $40000.00");
+		//currentPlayerListModel.addElement("Anthony Escobar, aka Tony, $10000.00");
+		//currentPlayerListModel.addElement("Hinal Pinchal, aka Hinal, $20000.00");
+		//currentPlayerListModel.addElement("Andrew Chen, aka Andrew, $30000.00");
+		//currentPlayerListModel.addElement("Juan Wang, aka Juan, $40000.00");
 		
 		// Remove Player Button
 		String buttonName = new String("REMOVE");
@@ -251,9 +257,24 @@ public class CasinoUIStartupFrame extends JFrame {
 					break;
 				case "REMOVE":
 					System.out.println("Info: REMOVE");
+					// get selected Jlist item and remove it
+					String selectedString = currentPlayersList.getSelectedValue();
+					int[] selectedIndex = currentPlayersList.getSelectedIndices();
+					if (selectedIndex.length == 1) {
+						System.out.println("Info: REMOVE " + selectedString + " from list at index: " + selectedIndex[0]);
+						currentPlayerListModel.remove(selectedIndex[0]);
+						String screenName = selectedString.split(", ")[1];
+						System.out.println("Info: REMOVE " + screenName + " from playerList");
+						casino.deletePlayer(screenName);
+					}
 					break;
 				case "ADD":
+					String name = nameField.getText();
+					String screenName = screenNameField.getText();
+					double accountValue = Double.parseDouble(accountField.getText());
+					casino.addPlayer(name, screenName, accountValue);
 					System.out.println("Info: ADD");
+					currentPlayerListModel.addElement(name + ", " + screenName + ", " + accountValue);
 					break;
 			}
 		}

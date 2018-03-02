@@ -4,9 +4,9 @@ public class Player {
 
 	  private String name;
 	  private String nickName;
-	  private int account;
+	  private double account;
 
-	  Player(String name, String nickName, int account){
+	  Player(String name, String nickName, double account){
 	    this.name = name;
 	    this.nickName = nickName;
 	    this.account = account;
@@ -30,10 +30,10 @@ public class Player {
 	  public String getNickName() {
 		  return nickName;
 	  }
-	  public void setAccount(int a){
+	  public void setAccount(double a){
 	    this.account = a;
 	  }
-	  public int getAccount(){
+	  public double getAccount(){
 	    return account;
 	  }
 }
