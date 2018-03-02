@@ -4,12 +4,13 @@ import java.util.*;
 import java.util.HashMap;
 import java.util.Map;
 
+
 public class Wager {
 
     private String ownerId;
     private String wagerType;
     private int payoutOdds;
-    private List<Integer> wagerContent = new ArrayList<Integer>();
+    private int wagerContent;
     private double wagerAmount;
     private static final Map<String, Integer> wagerTypePayoutMap =new HashMap<String, Integer>(){
         {
@@ -20,8 +21,8 @@ public class Wager {
             put("Six Line", 5);
             put("Columns", 2);
             put("Dozens", 2);
-            put("Reds", 1);
-            put("Blacks", 1);
+            put("Red", 1);
+            put("Black", 1);
             put("Highs", 1);
             put("Lows", 1);
             put("Odds", 1);
@@ -30,21 +31,12 @@ public class Wager {
     };
 
     // constructors
-    // integer content are list of legal ints for the wager type
-    public Wager(String id, String type, double amount, List<Integer> content) {
+    public Wager(String id, String type, double amount, int content) {
         ownerId = id;
         wagerType = type;
         payoutOdds = wagerTypePayoutMap.get(wagerType);
         wagerAmount = amount;
         wagerContent = content;
-    }
-    // some wagers like red/black do not have integer content
-    public Wager(String id, String type, double amount) {
-        ownerId = id;
-        wagerType = type;
-        payoutOdds = wagerTypePayoutMap.get(wagerType);
-        wagerAmount = amount;
-        wagerContent = null;
     }
 
     public Wager(String id) {
@@ -64,7 +56,7 @@ public class Wager {
         return payoutOdds;
     }
 
-    public List<Integer> getWagerContent() {
+    public int getWagerContent() {
         return wagerContent;
     }
 
@@ -72,13 +64,13 @@ public class Wager {
         return wagerAmount;
     }
 
-        // setters
+    // setters
     public void setWagerType(String type) {
         wagerType =type;
         payoutOdds = wagerTypePayoutMap.get(wagerType);
     }
 
-    public void setWagerContent(List<Integer> content) {
+    public void setWagerContent(int content) {
         wagerContent = content;
     }
 
@@ -86,4 +78,18 @@ public class Wager {
         wagerAmount = amount;
     }
 
+
+//    // this is for compiling test
+//    public static void main(String[] args){
+//        int content = 4;
+//        Wager myWager = new Wager("stone", "Straight", 50.1, content);
+//        System.out.println(myWager.getWagerId());
+//        System.out.println(myWager.getWagerType());
+//        System.out.println(myWager.getWagerAmount());
+//        System.out.println(myWager.getPayoutOdds());
+//        System.out.println(myWager.getWagerContent());
+    }
 }
+
+
+
