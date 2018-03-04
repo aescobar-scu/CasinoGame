@@ -48,9 +48,13 @@ public class CasinoUIGamePlayFrame extends JFrame {
 	
 	private int hGap = 10;
 	private int vGap = 10;
+	private Casino my_casino;
+	private Game my_game;
 	
-	CasinoUIGamePlayFrame() {
+	CasinoUIGamePlayFrame(Game game, Casino casino) {
 		super("Casino Game Play");
+		my_casino = casino;
+		my_game = game;
 		
 		// main start panel layout
 		Box mainPanel = new Box(BoxLayout.Y_AXIS);
@@ -124,9 +128,15 @@ public class CasinoUIGamePlayFrame extends JFrame {
 										  "Blacks",
 										  "Evens",
 										  "Odds",
-										  "Lows (1-18)",
-										  "Highs (19-36",
-										  "Numerical Bet"};
+										  "Lows",
+										  "Highs",
+										  "Straight", 	// 1 number
+										  "Split",		// 2 numbers
+										  "Street",		// 3 numbers
+										  "Square",		// 4 numbers
+										  "Six Line",	// 6 numbers
+										  "Columns",	// set of 12 numbers in a column, 1, 2, or 3
+										  "Dozens"};	// set of 12 numbers, 1-12, 13-24, 25-36. Enter 1, 2, or 3
 		
 		JComboBox<String> betTypeSelect = new JComboBox<>(betTypeNames);
 		betTypeSelect.setFont(defaultFont);
@@ -361,7 +371,7 @@ public class CasinoUIGamePlayFrame extends JFrame {
 					break;
 				case "EXIT":
 					System.out.println("Info: game " + keyId);
-					Casino.selectGameFrame(false);
+					my_casino.selectGameFrame(false);
 					break;		
 					
 			}

@@ -49,4 +49,8 @@ public class RouletteGame extends Game {
 		
 	}
 	
+	public double calculatePayout(Wager wager) {
+		double payout = 100; // temporary result for testing, real result to be implemented
+		return payout;
+	}
 }
