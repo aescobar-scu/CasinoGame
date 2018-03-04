@@ -252,8 +252,13 @@ public class CasinoUIStartupFrame extends JFrame {
 				case "PLAY":
 					System.out.println("Info: PLAY: ");
 					String gameName = selectGame.getItemAt(selectGame.getSelectedIndex());
-					casino.createGame(gameName);
-					casino.selectGameFrame(true);
+					boolean validGame = casino.createGame(gameName);
+					if (validGame) {
+						casino.selectGameFrame(true);
+					}
+					else {
+						JOptionPane.showMessageDialog(null, "Invalid game, try again");
+					}	
 					break;
 				case "REMOVE":
 					System.out.println("Info: REMOVE");
@@ -267,14 +272,20 @@ public class CasinoUIStartupFrame extends JFrame {
 						System.out.println("Info: REMOVE " + screenName + " from playerList");
 						casino.deletePlayer(screenName);
 					}
+					casino.printPlayerList();
 					break;
 				case "ADD":
 					String name = nameField.getText();
 					String screenName = screenNameField.getText();
+					if (casino.hasPlayer(screenName)) {
+						JOptionPane.showMessageDialog(null, "Player exists, Please remove existing player first");
+						break;
+					}
 					double accountValue = Double.parseDouble(accountField.getText());
 					casino.addPlayer(name, screenName, accountValue);
 					System.out.println("Info: ADD");
 					currentPlayerListModel.addElement(name + ", " + screenName + ", " + accountValue);
+					casino.printPlayerList();
 					break;
 			}
 		}

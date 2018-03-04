@@ -36,19 +36,30 @@ public class RouletteGame extends Game {
 	 * and makes that available to getGame Result
 	 * @see casino.Game#runGame()
 	 */
-	void runGame() {
-		
+	
+	// A thread is needed to start when this is called.
+	// the thread will calculate the spin result
+	// the casino will call runGame() as before, 
+	// but the method will then perform the thread.start().
+	void runGame() {	
 		int random = new Random().nextInt(SpinResult.values().length);
 		spinValue = SpinResult.values()[random].value;
 		
 	}
 	
-	void getGameResult() {
-		
-		
-		
+	// this method returns the integer result of the last spin
+	public int getGameResult() {
+		return spinValue;
 	}
 	
+	// this method returns a user string for the current game result
+	// the string will be displayed exactly like this in the UI
+	public String getGameResultString() {
+		String resultString = new String("");
+		resultString = "Red 17";
+		return resultString;
+	}
+
 	public double calculatePayout(Wager wager) {
 		double payout = 100; // temporary result for testing, real result to be implemented
 		return payout;
