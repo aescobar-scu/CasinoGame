@@ -5,12 +5,17 @@
 
 package casino;
 
+import java.util.List;
 import java.util.Random;
 
 public class RouletteGame extends Game {
 	
 	String gameName;
-	int spinValue;
+	int spinValue; //the value resulted from spinning the wheel
+	int betPayout; //the Payout Odd for the selected Wager
+	double betAmount; //the bet amount on the selected wager
+	String spinColor; //the color associated with the resulted number from spinning the wheel
+	double betResult = 0; //the final amount to be added or deducted from the player account
 	RouletteGame() {
 		gameName = new String("Roulette");
 	}
@@ -40,17 +45,117 @@ public class RouletteGame extends Game {
 		
 		int random = new Random().nextInt(SpinResult.values().length);
 		spinValue = SpinResult.values()[random].value;
+		spinColor = SpinResult.values()[random].name().toString();
 		
 	}
 	
-	void getGameResult() {
-		
-		
-		
-	}
+	/*
+	 * Checks if the given wager has won or lost
+	 * Calculates the amount after the game result to update the player and casino account
+	 * @see casino.Game#calculatePayout(casino.Wager)
+	 */
 	
-	public double calculatePayout(Wager wager) {
-		double payout = 100; // temporary result for testing, real result to be implemented
-		return payout;
+	void calculatePayout(Wager objWager) {
+		
+		betPayout = 0; betAmount = 0; betResult = 0;
+		List<Integer> lstBet = objWager.getBetNumber();
+		
+		switch(objWager.getWagerType()) {
+				
+				case("Straight"):
+				case("Split"):
+				case("Street"):
+				case("Square"):
+				case("Six Line"):
+				case("Columns"):
+				case("Dozens"):
+					
+					for(int i : lstBet) {
+						if(i == spinValue) {
+							betPayout = objWager.getPayoutOdds();
+							betAmount = objWager.getWagerAmount();
+							betResult = betAmount + (betAmount * betPayout);
+						}
+						else {
+							betResult = (0 - betAmount);
+						}
+					}
+				
+				case("Red"):
+					
+					if(spinColor.contains("Red")) {
+						betPayout = objWager.getPayoutOdds();
+						betAmount = objWager.getWagerAmount();
+						betResult = betAmount + (betAmount * betPayout);
+					}
+					else {
+						betResult = (0 - betAmount);
+					}
+				
+				case("Black"):
+					
+					if(spinColor.contains("Black")) {
+						betPayout = objWager.getPayoutOdds();
+						betAmount = objWager.getWagerAmount();
+						betResult = betAmount + (betAmount * betPayout);
+					}
+					else {
+						betResult = (0 - betAmount);
+					}
+				
+				case("Highs"):
+					
+					if(spinValue >= 19 && spinValue <= 36) {
+						betPayout = objWager.getPayoutOdds();
+						betAmount = objWager.getWagerAmount();
+						betResult = betAmount + (betAmount * betPayout);
+					}
+					else {
+						betResult = (0 - betAmount);
+					}
+				
+				case("Lows"):
+					
+					if(spinValue >= 1 && spinValue <= 18) {
+						betPayout = objWager.getPayoutOdds();
+						betAmount = objWager.getWagerAmount();
+						betResult = betAmount + (betAmount * betPayout);
+					}
+					else {
+						betResult = (0 - betAmount);
+					}
+				
+				case("Odds"):
+					
+					if(spinValue % 2 != 0) {
+						betPayout = objWager.getPayoutOdds();
+						betAmount = objWager.getWagerAmount();
+						betResult = betAmount + (betAmount * betPayout);
+					}
+					else {
+						betResult = (0 - betAmount);
+					}
+				
+				case("Evens"):
+					
+					if(spinValue % 2 == 0) {
+						betPayout = objWager.getPayoutOdds();
+						betAmount = objWager.getWagerAmount();
+						betResult = betAmount + (betAmount * betPayout);
+					}
+					else {
+						betResult = (0 - betAmount);
+					}
+				}
+			}
+	
+	/*
+	 * This method is to return the resultant amount to update the player and casino account
+	 * @see casino.Game#getGameResult()
+	 */
+	
+	double getGameResult(Wager objWager) {
+		calculatePayout(objWager);
+		return betResult;
 	}
 }
