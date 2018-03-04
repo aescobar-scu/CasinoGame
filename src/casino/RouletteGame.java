@@ -41,121 +41,34 @@ public class RouletteGame extends Game {
 	 * and makes that available to getGame Result
 	 * @see casino.Game#runGame()
 	 */
-	void runGame() {
-		
+	
+	// A thread is needed to start when this is called.
+	// the thread will calculate the spin result
+	// the casino will call runGame() as before, 
+	// but the method will then perform the thread.start().
+	void runGame() {	
 		int random = new Random().nextInt(SpinResult.values().length);
 		spinValue = SpinResult.values()[random].value;
 		spinColor = SpinResult.values()[random].name().toString();
 		
 	}
+
+	// this method returns the integer result of the last spin
+	public int getGameResult() {
+		return spinValue;
+	}
 	
-	/*
-	 * Checks if the given wager has won or lost
-	 * Calculates the amount after the game result to update the player and casino account
-	 * @see casino.Game#calculatePayout(casino.Wager)
-	 */
-	
-	void calculatePayout(Wager objWager) {
-		
-		betPayout = 0; betAmount = 0; betResult = 0;
-		List<Integer> lstBet = objWager.getBetNumber();
-		
-		switch(objWager.getWagerType()) {
-				
-				case("Straight"):
-				case("Split"):
-				case("Street"):
-				case("Square"):
-				case("Six Line"):
-				case("Columns"):
-				case("Dozens"):
-					
-					for(int i : lstBet) {
-						if(i == spinValue) {
-							betPayout = objWager.getPayoutOdds();
-							betAmount = objWager.getWagerAmount();
-							betResult = betAmount + (betAmount * betPayout);
-						}
-						else {
-							betResult = (0 - betAmount);
-						}
-					}
-				
-				case("Red"):
-					
-					if(spinColor.contains("Red")) {
-						betPayout = objWager.getPayoutOdds();
-						betAmount = objWager.getWagerAmount();
-						betResult = betAmount + (betAmount * betPayout);
-					}
-					else {
-						betResult = (0 - betAmount);
-					}
-				
-				case("Black"):
-					
-					if(spinColor.contains("Black")) {
-						betPayout = objWager.getPayoutOdds();
-						betAmount = objWager.getWagerAmount();
-						betResult = betAmount + (betAmount * betPayout);
-					}
-					else {
-						betResult = (0 - betAmount);
-					}
-				
-				case("Highs"):
-					
-					if(spinValue >= 19 && spinValue <= 36) {
-						betPayout = objWager.getPayoutOdds();
-						betAmount = objWager.getWagerAmount();
-						betResult = betAmount + (betAmount * betPayout);
-					}
-					else {
-						betResult = (0 - betAmount);
-					}
-				
-				case("Lows"):
-					
-					if(spinValue >= 1 && spinValue <= 18) {
-						betPayout = objWager.getPayoutOdds();
-						betAmount = objWager.getWagerAmount();
-						betResult = betAmount + (betAmount * betPayout);
-					}
-					else {
-						betResult = (0 - betAmount);
-					}
-				
-				case("Odds"):
-					
-					if(spinValue % 2 != 0) {
-						betPayout = objWager.getPayoutOdds();
-						betAmount = objWager.getWagerAmount();
-						betResult = betAmount + (betAmount * betPayout);
-					}
-					else {
-						betResult = (0 - betAmount);
-					}
-				
-				case("Evens"):
-					
-					if(spinValue % 2 == 0) {
-						betPayout = objWager.getPayoutOdds();
-						betAmount = objWager.getWagerAmount();
-						betResult = betAmount + (betAmount * betPayout);
-					}
-					else {
-						betResult = (0 - betAmount);
-					}
-				}
-			}
-	
-	/*
-	 * This method is to return the resultant amount to update the player and casino account
-	 * @see casino.Game#getGameResult()
-	 */
-	
-	double getGameResult(Wager objWager) {
-		calculatePayout(objWager);
-		return betResult;
+	// this method returns a user string for the current game result
+	// the string will be displayed exactly like this in the UI
+	public String getGameResultString() {
+		String resultString = new String("");
+		resultString = "Red 17";
+		return resultString;
+	}
+
+	public double calculatePayout(Wager wager) {
+		double payout = 100; // temporary result for testing, real result to be implemented
+		return payout;
+
 	}
 }

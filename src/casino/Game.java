@@ -4,7 +4,7 @@ public abstract class Game {
 
 
 	abstract void runGame();
-	abstract double getGameResult(Wager objWager);
-	abstract void calculatePayout(Wager objWager);
-	
+	abstract int getGameResult();
+	abstract double calculatePayout(Wager wager);
+	abstract String getGameResultString();
 }
