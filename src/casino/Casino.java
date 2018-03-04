@@ -170,6 +170,18 @@ public class Casino {
 		return playerScreenNameList;
 	}
 	
+	public List<String> getPlayerResultsData() {
+		List<String> resultDataList = new ArrayList<String>();
+		for (SessionResult sessionResult : sessionResultList.values()) {
+			String playerResult = new String();
+			playerResult = sessionResult.screenName + ","
+			+ sessionResult.lastWinLoss + ","
+			+ sessionResult.accountBalance;
+			resultDataList.add(playerResult);	
+		}
+		return resultDataList;
+	}
+
 	// true if player already exists in the playerList
 	public boolean hasPlayer(String screenName){
 		if (playerList.containsKey(screenName)) {

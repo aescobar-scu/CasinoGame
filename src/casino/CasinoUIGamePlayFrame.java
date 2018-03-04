@@ -67,6 +67,12 @@ public class CasinoUIGamePlayFrame extends JFrame {
 	// spin result and player results
 	JFormattedTextField spinResultField;
 	
+	// The player results panel which is refreshed after spin
+	JPanel combinedDataPanel;
+	JLabel screenNameLabel;
+	JLabel winLossLabel;
+	JLabel accountBalanceLabel;
+	
 	CasinoUIGamePlayFrame(Game game, Casino casino) {
 		super("Casino Game Play");
 		my_casino = casino;
@@ -259,52 +265,24 @@ public class CasinoUIGamePlayFrame extends JFrame {
 		headingLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
 		// the table labels
-		JLabel screenNameLabel = new JLabel("Screen Name");
+		screenNameLabel = new JLabel("Screen Name");
 		screenNameLabel.setFont(defaultFont);
 		screenNameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-		JLabel winLossLabel = new JLabel("Last Win/Loss");
+		winLossLabel = new JLabel("Last Win/Loss");
 		winLossLabel.setFont(defaultFont);
 		winLossLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-		JLabel accountBalanceLabel = new JLabel("Account Balance");
+		accountBalanceLabel = new JLabel("Account Balance");
 		accountBalanceLabel.setFont(defaultFont);
 		accountBalanceLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
 		// add table labels to the playerDataPanel in 1 row
-		JPanel playerDataPanel = new JPanel(new GridLayout(0,3));
-		playerDataPanel.add(screenNameLabel);
-		playerDataPanel.add(winLossLabel);
-		playerDataPanel.add(accountBalanceLabel);
-
-		// Now add the player data to the panel 1 row at a time
-		// 	Create using a for loop and current players list at initialization
-		// 	TBD - how will I name and reference each users account and winLoss?
-		// screen name
-
-		JFormattedTextField screenNameField = new JFormattedTextField();
-		screenNameField.setColumns(columnSize);
-		screenNameField.setFont(defaultFont);
-		screenNameField.setAlignmentX(Component.CENTER_ALIGNMENT);
-		// win/loss amount
-		JFormattedTextField winLossField = new JFormattedTextField();
-		winLossField.setColumns(columnSize);
-		winLossField.setFont(defaultFont);
-		winLossField.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-		JFormattedTextField accountBalanceField = new JFormattedTextField();
-		accountBalanceField.setColumns(columnSize);
-		accountBalanceField.setFont(defaultFont);
-		accountBalanceField.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-		// add each row to the playerDatapanel
-		playerDataPanel.add(screenNameField);
-		playerDataPanel.add(winLossField);
-		playerDataPanel.add(accountBalanceField);
-
+		//JPanel playerDataPanel = new JPanel(new GridLayout(0,3));
+		JPanel playerDataPanel = createPlayerDataPanel(screenNameLabel, winLossLabel, accountBalanceLabel);
 		// Grid layouts always need to be encapsulated into a panel to
 		// prevent stretching
-		JPanel combinedDataPanel = new JPanel();
+		combinedDataPanel = new JPanel();
 		combinedDataPanel.add(playerDataPanel);
 
 		playerPanel.add(Box.createRigidArea(new Dimension(0,100)));
@@ -316,6 +294,43 @@ public class CasinoUIGamePlayFrame extends JFrame {
 		return playerPanel;
 	}
 
+	private JPanel createPlayerDataPanel(JLabel screenNameLabel, JLabel winLossLabel, JLabel accountBalanceLabel) {
+		JPanel playerDataPanel = new JPanel(new GridLayout(0,3));
+		
+		playerDataPanel.add(screenNameLabel);
+		playerDataPanel.add(winLossLabel);
+		playerDataPanel.add(accountBalanceLabel);
+		
+		int columnSize = 20;
+		List<String> playerDataList = my_casino.getPlayerResultsData();
+		for(String playerData : playerDataList) {
+			String[] playerDataSplit = playerData.split(",");
+			playerDataPanel.add(createPlayerField(playerDataSplit[0], columnSize)); 
+			playerDataPanel.add(createPlayerField(playerDataSplit[1], columnSize)); 
+			playerDataPanel.add(createPlayerField(playerDataSplit[2], columnSize)); 
+		}
+		return playerDataPanel;
+	}
+	
+	private void refreshPlayerDataPanel() {
+		combinedDataPanel.removeAll();
+		JPanel newDataPanel = createPlayerDataPanel(screenNameLabel, winLossLabel, accountBalanceLabel);
+		combinedDataPanel.add(newDataPanel);
+		combinedDataPanel.revalidate();
+		combinedDataPanel.repaint();
+	}
+	
+	private JFormattedTextField createPlayerField(String text, int columnSize) {
+		JFormattedTextField field = new JFormattedTextField();
+		field.setColumns(columnSize);
+		field.setFont(defaultFont);
+		field.setAlignmentX(Component.CENTER_ALIGNMENT);
+		field.setText(text);
+		
+		return field;
+	}
+
+	
 	private Box createPlayGamePanel(ActionListener handler) {
 		int columnSize = 10;
 
@@ -579,7 +594,7 @@ public class CasinoUIGamePlayFrame extends JFrame {
 					// display new player results
 					my_casino.printPlayerList();
 					my_casino.printSessionResultList();
-					
+					refreshPlayerDataPanel();
 					break;
 				case "EXIT":
 					System.out.println("Info: game " + keyId);
