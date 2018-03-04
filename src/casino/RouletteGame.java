@@ -5,12 +5,17 @@
 
 package casino;
 
+import java.util.List;
 import java.util.Random;
 
 public class RouletteGame extends Game {
 	
 	String gameName;
-	int spinValue;
+	int spinValue; //the value resulted from spinning the wheel
+	int betPayout; //the Payout Odd for the selected Wager
+	double betAmount; //the bet amount on the selected wager
+	String spinColor; //the color associated with the resulted number from spinning the wheel
+	double betResult = 0; //the final amount to be added or deducted from the player account
 	RouletteGame() {
 		gameName = new String("Roulette");
 	}
@@ -44,9 +49,10 @@ public class RouletteGame extends Game {
 	void runGame() {	
 		int random = new Random().nextInt(SpinResult.values().length);
 		spinValue = SpinResult.values()[random].value;
+		spinColor = SpinResult.values()[random].name().toString();
 		
 	}
-	
+
 	// this method returns the integer result of the last spin
 	public int getGameResult() {
 		return spinValue;
@@ -63,5 +69,6 @@ public class RouletteGame extends Game {
 	public double calculatePayout(Wager wager) {
 		double payout = 100; // temporary result for testing, real result to be implemented
 		return payout;
+
 	}
 }
