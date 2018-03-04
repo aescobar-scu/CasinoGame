@@ -15,7 +15,7 @@ public class RouletteGame extends Game {
 	int betPayout; //the Payout Odd for the selected Wager
 	double betAmount; //the bet amount on the selected wager
 	String spinColor; //the color associated with the resulted number from spinning the wheel
-	double betResult = 0; //the final amount to be added or deducted from the player account
+	double finalPayout = 0; //the final amount to be added or deducted from the player account
 	RouletteGame() {
 		gameName = new String("Roulette");
 	}
@@ -51,6 +51,16 @@ public class RouletteGame extends Game {
 		spinValue = SpinResult.values()[random].value;
 		spinColor = SpinResult.values()[random].name().toString();
 		
+		if(spinColor.contains("Red")) {
+			spinColor = "Red";
+		}
+		else if(spinColor.contains("Black")) {
+			spinColor = "Black";
+		}
+		else {
+			spinColor = "Green";
+		}
+		
 	}
 
 	// this method returns the integer result of the last spin
@@ -61,14 +71,133 @@ public class RouletteGame extends Game {
 	// this method returns a user string for the current game result
 	// the string will be displayed exactly like this in the UI
 	public String getGameResultString() {
-		String resultString = new String("");
-		resultString = "Red 17";
-		return resultString;
+		
+		String strResult = spinColor + " " + Integer.toString(spinValue);
+		return strResult;
+	}
+	
+	/*
+	 * Checks if the given wager has won or lost
+	 * Calculates the amount after the game result to update the player and casino account
+	 * @see casino.Game#calculatePayout(casino.Wager)
+	 */
+
+	public double calculatePayout(Wager objWager) {
+		
+		try {
+		betPayout = 0; betAmount = 0; finalPayout = 0;
+		List<Integer> lstBet = objWager.getBetNumber();
+		
+		switch(objWager.getWagerType()) {
+				
+				case("Straight"):
+				case("Split"):
+				case("Street"):
+				case("Square"):
+				case("Six Line"):
+				case("Columns"):
+				case("Dozens"):
+					
+					for(int i : lstBet) {
+						if(i == spinValue) {
+							betPayout = objWager.getPayoutOdds();
+							betAmount = objWager.getWagerAmount();
+							finalPayout = betAmount + (betAmount * betPayout);
+						}
+						else {
+							finalPayout = (0 - betAmount);
+						}
+					}
+				
+				case("Red"):
+					
+					if(spinColor == "Red") {
+						betPayout = objWager.getPayoutOdds();
+						betAmount = objWager.getWagerAmount();
+						finalPayout = betAmount + (betAmount * betPayout);
+					}
+					else {
+						finalPayout = (0 - betAmount);
+					}
+				
+				case("Black"):
+					
+					if(spinColor == "Black") {
+						betPayout = objWager.getPayoutOdds();
+						betAmount = objWager.getWagerAmount();
+						finalPayout = betAmount + (betAmount * betPayout);
+					}
+					else {
+						finalPayout = (0 - betAmount);
+					}
+				
+				case("Highs"):
+					
+					if(spinValue >= 19 && spinValue <= 36) {
+						betPayout = objWager.getPayoutOdds();
+						betAmount = objWager.getWagerAmount();
+						finalPayout = betAmount + (betAmount * betPayout);
+					}
+					else {
+						finalPayout = (0 - betAmount);
+					}
+				
+				case("Lows"):
+					
+					if(spinValue >= 1 && spinValue <= 18) {
+						betPayout = objWager.getPayoutOdds();
+						betAmount = objWager.getWagerAmount();
+						finalPayout = betAmount + (betAmount * betPayout);
+					}
+					else {
+						finalPayout = (0 - betAmount);
+					}
+				
+				case("Odds"):
+					
+					if(spinValue % 2 != 0) {
+						betPayout = objWager.getPayoutOdds();
+						betAmount = objWager.getWagerAmount();
+						finalPayout = betAmount + (betAmount * betPayout);
+					}
+					else {
+						finalPayout = (0 - betAmount);
+					}
+				
+				case("Evens"):
+					
+					if(spinValue % 2 == 0) {
+						betPayout = objWager.getPayoutOdds();
+						betAmount = objWager.getWagerAmount();
+						finalPayout = betAmount + (betAmount * betPayout);
+					}
+					else {
+						finalPayout = (0 - betAmount);
+					}
+				}
+		return finalPayout;
+		
+		}catch(NullPointerException Ex) {
+			
+			System.out.println("Error Message: Wager Object not found.");
+			return 0;
+		}
+
 	}
 
-	public double calculatePayout(Wager wager) {
-		double payout = 100; // temporary result for testing, real result to be implemented
-		return payout;
+	
+	/*public static void main(String[] args) {
+		
+		RouletteGame rg = new RouletteGame();
+		
+		
+		rg.runGame();
+		System.out.println("SpinValue: " + rg.getGameResult());
+		System.out.println("String Result: " + rg.getGameResultString());
+		System.out.println("Payout: " + rg.calculatePayout(new Wager("Hinal")));
+		
+		
+	}*/
 
-	}
 }
+
