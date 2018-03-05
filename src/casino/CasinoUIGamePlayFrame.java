@@ -360,6 +360,7 @@ public class CasinoUIGamePlayFrame extends JFrame {
 		spinResultField = new JFormattedTextField();
 		spinResultField.setColumns(columnSize);
 		spinResultField.setFont(defaultFont);
+		spinResultField.setEditable(false);
 		spinResultField.setAlignmentX(Component.CENTER_ALIGNMENT);
 
 		JPanel resultPanel = new JPanel();
@@ -507,8 +508,19 @@ public class CasinoUIGamePlayFrame extends JFrame {
 					wagerType = betTypeSelect.getItemAt(betTypeSelect.getSelectedIndex());
 					screenName = betPlayerSelect.getItemAt(betPlayerSelect.getSelectedIndex());
 					String betAmount = betAmountField.getText();
+					
+					if(betAmount.isEmpty()) {
+						JOptionPane.showMessageDialog(null, "Invalid bet amount.");
+						break;
+					}
+					
 					try {
 						wagerAmount = Double.parseDouble(betAmount);
+						if(Double.compare(wagerAmount, my_casino.getAccountAmount(screenName)) > 0) {
+							JOptionPane.showMessageDialog(null, "Not Enough Money for this bet.");
+							break;
+						}
+						
 					} catch (NumberFormatException e) {
 						System.out.println("ERROR: wagerAmount: invalid number" + betAmount);
 						break;
@@ -541,6 +553,11 @@ public class CasinoUIGamePlayFrame extends JFrame {
 					break;
 				case "REMOVE":
 					System.out.println("Info: game " + keyId);
+					
+					if(currentBetsList.isSelectionEmpty()) {
+						JOptionPane.showMessageDialog(null, "Please select a bet to remove.");
+						break;
+					}
 
 					// remove selection from JList
 					System.out.println(" currentBetsList selected index: " + currentBetsList.getSelectedIndex());

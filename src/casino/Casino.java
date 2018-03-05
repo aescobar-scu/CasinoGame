@@ -70,6 +70,10 @@ public class Casino {
 		playerList.remove(screenName);
 		System.out.println("deletePlayer: " + screenName + " from playerList, now " + playerList.size() + " players");
 	}
+	
+	public double getAccountAmount(String screenName) {
+		return playerList.get(screenName).getAccount();
+	}
 
 	// Add a new wager. If playerId exists, the wager is overwritten
 	public void addWager(String screenName, double wagerAmount, String wagerType, List<Integer> wagerContent) {
