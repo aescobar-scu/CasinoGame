@@ -87,6 +87,8 @@ public class RouletteGame extends Game {
 		try {
 		betPayout = 0; betAmount = 0; finalPayout = 0;
 		List<Integer> lstBet = objWager.getBetNumber();
+		betPayout = objWager.getPayoutOdds();
+		betAmount = objWager.getWagerAmount();
 		
 		switch(objWager.getWagerType()) {
 				
@@ -100,80 +102,74 @@ public class RouletteGame extends Game {
 					
 					for(int i : lstBet) {
 						if(i == spinValue) {
-							betPayout = objWager.getPayoutOdds();
-							betAmount = objWager.getWagerAmount();
 							finalPayout = betAmount + (betAmount * betPayout);
 						}
 						else {
 							finalPayout = (0 - betAmount);
 						}
 					}
+					break;
 				
 				case("Red"):
 					
 					if(spinColor == "Red") {
-						betPayout = objWager.getPayoutOdds();
-						betAmount = objWager.getWagerAmount();
 						finalPayout = betAmount + (betAmount * betPayout);
 					}
 					else {
 						finalPayout = (0 - betAmount);
 					}
+					break;
 				
 				case("Black"):
 					
 					if(spinColor == "Black") {
-						betPayout = objWager.getPayoutOdds();
-						betAmount = objWager.getWagerAmount();
 						finalPayout = betAmount + (betAmount * betPayout);
 					}
 					else {
 						finalPayout = (0 - betAmount);
 					}
+					break;
 				
 				case("Highs"):
 					
 					if(spinValue >= 19 && spinValue <= 36) {
-						betPayout = objWager.getPayoutOdds();
-						betAmount = objWager.getWagerAmount();
 						finalPayout = betAmount + (betAmount * betPayout);
 					}
 					else {
 						finalPayout = (0 - betAmount);
 					}
+					break;
 				
 				case("Lows"):
 					
 					if(spinValue >= 1 && spinValue <= 18) {
-						betPayout = objWager.getPayoutOdds();
-						betAmount = objWager.getWagerAmount();
 						finalPayout = betAmount + (betAmount * betPayout);
 					}
 					else {
 						finalPayout = (0 - betAmount);
 					}
+					break;
 				
 				case("Odds"):
 					
 					if(spinValue % 2 != 0) {
-						betPayout = objWager.getPayoutOdds();
-						betAmount = objWager.getWagerAmount();
 						finalPayout = betAmount + (betAmount * betPayout);
 					}
 					else {
 						finalPayout = (0 - betAmount);
 					}
+					System.out.println("Final Payout at Odds:" + finalPayout);
+					break;
 				
 				case("Evens"):
 					
 					if(spinValue % 2 == 0) {
-						betPayout = objWager.getPayoutOdds();
-						betAmount = objWager.getWagerAmount();
 						finalPayout = betAmount + (betAmount * betPayout);
 					}
 					else {
 						finalPayout = (0 - betAmount);
 					}
+					break;
 				}
 		return finalPayout;
 		

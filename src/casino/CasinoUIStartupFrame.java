@@ -250,6 +250,11 @@ public class CasinoUIStartupFrame extends JFrame {
 			
 			switch (keyId) {
 				case "PLAY":
+					
+					if(currentPlayerListModel.isEmpty()){
+						JOptionPane.showMessageDialog(null, "Please add at least one Player to proceed with the game.");
+						break;
+					}
 					System.out.println("Info: PLAY: ");
 					String gameName = selectGame.getItemAt(selectGame.getSelectedIndex());
 					boolean validGame = casino.createGame(gameName);
@@ -261,6 +266,11 @@ public class CasinoUIStartupFrame extends JFrame {
 					}	
 					break;
 				case "REMOVE":
+					
+					if(currentPlayersList.isSelectionEmpty()){
+						JOptionPane.showMessageDialog(null, "No Players selected to remove.");
+						break;
+					}
 					System.out.println("Info: REMOVE");
 					// get selected Jlist item and remove it
 					String selectedString = currentPlayersList.getSelectedValue();
@@ -275,6 +285,11 @@ public class CasinoUIStartupFrame extends JFrame {
 					casino.printPlayerList();
 					break;
 				case "ADD":
+					
+					if(nameField.getText().isEmpty() || screenNameField.getText().isEmpty() || accountField.getText().isEmpty()) {
+						JOptionPane.showMessageDialog(null, "Please fill all the details to proceed.");
+						break;
+					}
 					String name = nameField.getText();
 					String screenName = screenNameField.getText();
 					if (casino.hasPlayer(screenName)) {
@@ -286,8 +301,15 @@ public class CasinoUIStartupFrame extends JFrame {
 					System.out.println("Info: ADD");
 					currentPlayerListModel.addElement(name + ", " + screenName + ", " + accountValue);
 					casino.printPlayerList();
+					clearTextFields();
 					break;
 			}
 		}
+	}
+	
+	public void clearTextFields() {
+		nameField.setText("");
+		screenNameField.setText("");
+		accountField.setText("");
 	}
 }
