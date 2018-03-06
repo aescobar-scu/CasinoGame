@@ -180,20 +180,5 @@ public class RouletteGame extends Game {
 		}
 
 	}
-
-	
-	/*public static void main(String[] args) {
-		
-		RouletteGame rg = new RouletteGame();
-		
-		
-		rg.runGame();
-		System.out.println("SpinValue: " + rg.getGameResult());
-		System.out.println("String Result: " + rg.getGameResultString());
-		System.out.println("Payout: " + rg.calculatePayout(new Wager("Hinal")));
-		
-		
-	}*/
-
 }
 

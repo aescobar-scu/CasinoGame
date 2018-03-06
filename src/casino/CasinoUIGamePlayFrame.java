@@ -73,6 +73,9 @@ public class CasinoUIGamePlayFrame extends JFrame {
 	JLabel winLossLabel;
 	JLabel accountBalanceLabel;
 	
+	//	Thread wait time
+	int waitTime = 500;
+	
 	CasinoUIGamePlayFrame(Game game, Casino casino) {
 		super("Casino Game Play");
 		my_casino = casino;
@@ -598,12 +601,25 @@ public class CasinoUIGamePlayFrame extends JFrame {
 				case "SPIN":
 					System.out.println("Info: game " + keyId);
 					
+					spinResultField.setText("");
+					
 					if(currentBetsListModel.isEmpty()) {
 						JOptionPane.showMessageDialog(null, "No bets on the list to play on.");
 						break;
 					}
-					// run the spin (as a thread if possible)
-					my_game.runGame();
+					
+					JOptionPane.showMessageDialog(null, "Please wait while we spin the wheel and fetch result for you.");
+					
+					//Calling seperate thread for the spin 
+					Thread newThread = new Thread(new ThreadImplementation(waitTime));
+					newThread.start();
+					try {
+						newThread.join();
+					}catch(InterruptedException Ex) {
+						Ex.printStackTrace();
+					}
+					//my_game.runGame(); /Called this method using seperate thread
+					
 					spinResultField.setText(my_game.getGameResultString());
 					
 					// pay results to player accounts
@@ -624,6 +640,31 @@ public class CasinoUIGamePlayFrame extends JFrame {
 					break;
 
 			}
+		}
+	}
+	
+	//Sample Implementation of threading
+	public class ThreadImplementation implements Runnable{
+		
+		private int waitTime;
+		
+		public ThreadImplementation(int waitTime) {
+			
+			this.waitTime = waitTime;
+		}
+		
+		public void run() {
+			
+			try {
+				
+				Thread.sleep(waitTime);
+				my_game.runGame();
+				
+			}catch(InterruptedException Ex) {
+				
+				JOptionPane.showMessageDialog(null, "Something went wrong, please try again.");
+			}
+			
 		}
 	}
 }
