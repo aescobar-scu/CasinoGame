@@ -597,6 +597,11 @@ public class CasinoUIGamePlayFrame extends JFrame {
 					break;
 				case "SPIN":
 					System.out.println("Info: game " + keyId);
+					
+					if(currentBetsListModel.isEmpty()) {
+						JOptionPane.showMessageDialog(null, "No bets on the list to play on.");
+						break;
+					}
 					// run the spin (as a thread if possible)
 					my_game.runGame();
 					spinResultField.setText(my_game.getGameResultString());
