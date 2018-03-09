@@ -553,6 +553,10 @@ public class CasinoUIGamePlayFrame extends JFrame {
 					String wagerString = createWagerListString(screenName, wagerType, wagerAmount, wagerContent);
 					currentBetsListModel.addElement(wagerString);
 					my_casino.printWagerList();
+					betTypeSelect.setSelectedIndex(0);
+					betPlayerSelect.setSelectedIndex(0);
+					betAmountField.setText("");
+					betNumberField.setText("");
 					break;
 				case "REMOVE":
 					System.out.println("Info: game " + keyId);
@@ -597,6 +601,7 @@ public class CasinoUIGamePlayFrame extends JFrame {
 					}
 					my_casino.deleteWager(screenName, wagerAmount, wagerType, wagerContent);
 					my_casino.printWagerList();
+					
 					break;
 				case "SPIN":
 					System.out.println("Info: game " + keyId);
