@@ -94,25 +94,56 @@ public class RouletteGame extends Game {
 				
 				case("Straight"):
 				case("Split"):
+					if (lstBet.contains(spinValue)) {
+                        finalPayout = betAmount + (betAmount * betPayout);
+                    }
+                    else {
+                        finalPayout = (0 - betAmount);
+                    }
+                    break;
+
 				case("Street"):
+                    if (lstBet.contains(spinValue)) {
+                        finalPayout = betAmount + (betAmount * betPayout);
+                    }
+                    else {
+                        finalPayout = (0 - betAmount);
+                    }
+                    break;
+
 				case("Square"):
+                    if (lstBet.contains(spinValue)) {
+                        finalPayout = betAmount + (betAmount * betPayout);
+                    }
+                    else {
+                        finalPayout = (0 - betAmount);
+                    }
+                    break;
+
 				case("Six Line"):
-				case("Columns"):
-				case("Dozens"):
-					
-					for(int i : lstBet) {
-						if(i == spinValue) {
-							finalPayout = betAmount + (betAmount * betPayout);
-						}
-						else {
-							finalPayout = (0 - betAmount);
-						}
-					}
+                    if (lstBet.contains(spinValue)) {
+                        finalPayout = betAmount + (betAmount * betPayout);
+                    }
+                    else {
+                        finalPayout = (0 - betAmount);
+                    }
 					break;
-				
+				case("Columns"):
+
+				case("Dozens"):
+                    for (int i : lstBet) {
+                        if (spinValue > (i-1)*12 && spinValue <= i*12) {
+                            finalPayout = betAmount + (betAmount * betPayout);
+                        }
+                        else {
+                            finalPayout = (0 - betAmount);
+                        }
+                    }
+                    break;
+
 				case("Red"):
 					
-					if(spinColor == "Red") {
+					if(spinColor.equals("Red")) {
 						finalPayout = betAmount + (betAmount * betPayout);
 					}
 					else {
@@ -122,7 +153,7 @@ public class RouletteGame extends Game {
 				
 				case("Black"):
 					
-					if(spinColor == "Black") {
+					if(spinColor.equals("Black")) {
 						finalPayout = betAmount + (betAmount * betPayout);
 					}
 					else {

@@ -4,11 +4,11 @@ import java.util.*;
 
 public class Wager {
 
-    private String playerName;
-    private String wagerType;
-    private int payoutOdds;
-    private List<Integer> betNumber;
-    private double wagerAmount;
+    private String playerName;          //  player's name
+    private String wagerType;           //  selected wager type
+    private int payoutOdds;             //  payout odds of a wager type
+    private List<Integer> betNumber;    //  the numbers that player bet on
+    private double wagerAmount;         // how much money has the player bet
     private static final Map<String, Integer> wagerTypePayoutMap =new HashMap<String, Integer>(){
         {
             put("Straight", 35);
@@ -25,7 +25,8 @@ public class Wager {
             put("Odds", 1);
             put("Evens", 1);
         }
-    };
+    };                                  // a map mapping wager type to its payout odds
+
 
     // constructors
     public Wager(String playerName, String wagerType, double wagerAmount, List<Integer> betNumber) {
@@ -49,7 +50,6 @@ public class Wager {
 
 
     // getters
-    // this is the screenName
     public String getPlayerName() {
         return playerName;
     }
@@ -85,30 +85,30 @@ public class Wager {
     }
 
 
-    // this is for compiling test
-    public static void main(String[] args){
-        List<Integer> content = new ArrayList<>();
-        content.add(3);
-        content.add(4);
-
-//        Wager myWager = new Wager("stone", "Split", 50.1, content);
-//        System.out.println(myWager.getPlayerName());
-//        System.out.println(myWager.getWagerType());
-//        System.out.println(myWager.getWagerAmount());
-//        System.out.println(myWager.getPayoutOdds());
-//        System.out.println(myWager.getBetNumber());
-
-
-        Wager wager2 = new Wager("stone");
-//        wager2.setWagerType("split");
-        wager2.setWagerAmount(69.99);
-        wager2.setBetNumber(content);
-        System.out.println(wager2.getPlayerName());
-        System.out.println(wager2.getWagerType());
-        System.out.println(wager2.getWagerAmount());
-        System.out.println(wager2.getPayoutOdds());
-        System.out.println(wager2.getBetNumber());
-    }
+//    // this is for compiling test
+//    public static void main(String[] args){
+//        List<Integer> content = new ArrayList<>();
+//        content.add(3);
+//        content.add(4);
+//
+////        Wager myWager = new Wager("stone", "Split", 50.1, content);
+////        System.out.println(myWager.getPlayerName());
+////        System.out.println(myWager.getWagerType());
+////        System.out.println(myWager.getWagerAmount());
+////        System.out.println(myWager.getPayoutOdds());
+////        System.out.println(myWager.getBetNumber());
+//
+//
+//        Wager wager2 = new Wager("stone");
+////        wager2.setWagerType("split");
+//        wager2.setWagerAmount(69.99);
+//        wager2.setBetNumber(content);
+//        System.out.println(wager2.getPlayerName());
+//        System.out.println(wager2.getWagerType());
+//        System.out.println(wager2.getWagerAmount());
+//        System.out.println(wager2.getPayoutOdds());
+//        System.out.println(wager2.getBetNumber());
+//    }
 }
 
 
